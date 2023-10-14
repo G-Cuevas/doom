@@ -62,5 +62,4 @@ function mainLoop () {
     level.draw(); 
     player.draw();
     player.move();
-    console.log(player.cameraAngle)
 }

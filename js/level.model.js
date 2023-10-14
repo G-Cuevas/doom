@@ -17,10 +17,14 @@ class Level {
 
         this.tileWidth = parseInt(this.screenWidth / this.terrainWidth);
         this.tileHeight = parseInt(this.screenHeight / this.terrainHeight);
-        
-        
-        console.log({this: this})
 
+    }
+
+
+    isWall (x, y) {
+        if (this.terrain[y] === undefined) return true;
+        if (this.terrain[y][x] === undefined) return true;
+        return this.terrain[y][x] === 1;
     }
 
 

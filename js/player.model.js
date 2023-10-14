@@ -10,9 +10,9 @@ class Player {
         this.y = y;
 
         this.walk = 0;
-        this.rotate = 0;
+        this.spin = 0;
 
-        this.cameraAngle = 0;
+        this.facingAngle = 0;
 
         this.moveSpeed = 3;                         // 3 pixels
         this.rotateSpeed = (Math.PI / 180) * 3;     // 3 degrees
@@ -31,10 +31,10 @@ class Player {
                 this.walk--;
             },
             'a': () => {
-                this.rotate--;
+                this.spin--;
             },
             'd': () => {
-                this.rotate++;
+                this.spin++;
             }
 
         }
@@ -47,10 +47,10 @@ class Player {
                 this.walk++;
             },
             'a': () => {
-                this.rotate++;
+                this.spin++;
             },
             'd': () => {
-                this.rotate--;
+                this.spin--;
             }
         }
 
@@ -59,9 +59,9 @@ class Player {
             if (!keyDowns[event.key]) return;
             keyDowns[event.key]();
 
-            console.log(event.key);
-            console.log({moveDirection: this.walk});
-            console.log({rotateDirection: this.rotate});
+            // console.log(event.key);
+            // console.log({moveDirection: this.walk});
+            // console.log({rotateDirection: this.spin});
         });
         
         document.addEventListener('keyup', (event) => {
@@ -69,28 +69,42 @@ class Player {
             if (!keyUps[event.key]) return;
             keyUps[event.key]();
 
-            console.log(event.key);
-            console.log({moveDirection: this.walk});
-            console.log({rotateDirection: this.rotate});
+            // console.log(event.key);
+            // console.log({moveDirection: this.walk});
+            // console.log({rotateDirection: this.spin});
         });
+    }
+
+
+    collision (x, y) {
+        let collision = false;
+
+        const tileX = Math.floor(x / this.level.tileWidth);
+        const tileY = Math.floor(y / this.level.tileHeight);
+
+        if (this.level.isWall(tileX, tileY)) collision = true;
+
+        // console.log({collision})
+
+        return collision;
     }
 
 
     move () {
         const moveStep = this.walk * this.moveSpeed;
-        const rotateStep = this.rotate * this.rotateSpeed;
-        this.cameraAngle += rotateStep;
+        const rotateStep = this.spin * this.rotateSpeed;
+        this.facingAngle += rotateStep;
 
-        const newPlayerX = this.x + Math.cos(this.cameraAngle) * moveStep;
-        const newPlayerY = this.y + Math.sin(this.cameraAngle) * moveStep;
+        const newPlayerX = this.x + Math.cos(this.facingAngle) * moveStep;
+        const newPlayerY = this.y + Math.sin(this.facingAngle) * moveStep;
 
-        this.x = newPlayerX;
-        this.y = newPlayerY;
-
-    }
+        if (!this.collision(newPlayerX, this.y)) this.x = newPlayerX;
+        if (!this.collision(this.x, newPlayerY)) this.y = newPlayerY;
 
 
-    
+        // if (rotateStep !== 0) console.log({facingAngle: this.facingAngle});
+
+    }     
 
 
     draw() {
@@ -103,6 +117,20 @@ class Player {
 
         this.ctx.fillStyle = this.playerColor;
         this.ctx.fillRect(xStart, yStart, xEnd, yEnd);
+
+
+        // FACING ANGLE LINE
+        const lineLength = 80;
+        const lineColor = 'red';
+        const lineX = this.x + Math.cos(this.facingAngle) * lineLength;
+        const lineY = this.y + Math.sin(this.facingAngle) * lineLength;
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.x, this.y);
+        this.ctx.lineTo(lineX, lineY);
+        this.ctx.strokeStyle = lineColor;
+        this.ctx.stroke();
+
     }
 }
 
