@@ -101,6 +101,9 @@ class Player {
         if (!this.collision(newPlayerX, this.y)) this.x = newPlayerX;
         if (!this.collision(this.x, newPlayerY)) this.y = newPlayerY;
 
+        if (this.facingAngle > Math.PI * 2) this.facingAngle -= Math.PI * 2;
+        if (this.facingAngle < 0) this.facingAngle += Math.PI * 2;
+
 
         // if (rotateStep !== 0) console.log({facingAngle: this.facingAngle});
 

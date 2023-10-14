@@ -24,12 +24,12 @@ let player;
 const terrain = [
     [1,1,1,1,1,1,1,1,1,1],
     [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,1,0,0,0,1],
-    [1,0,0,0,0,0,1,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,1,0,1],
+    [1,0,1,0,0,0,1,0,0,1],
+    [1,0,0,0,1,1,1,0,1,1],
+    [1,0,1,0,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,1,0,1],
+    [1,0,1,0,1,0,0,1,0,1],
     [1,0,0,0,0,0,0,0,0,1],
     [1,1,1,1,1,1,1,1,1,1]
 ];
@@ -44,7 +44,7 @@ function start () {
     screen.height = screenHeight;
 
     level = new Level({ screen, ctx, terrain, wallColor, floorColor });
-    player = new Player({ ctx, level, x: 100, y: 100, playerColor, playerWidth });
+    player = new Player({ ctx, level, x: 75, y: 75, playerColor, playerWidth });
     player.setupControls();
 
 
