@@ -14,16 +14,23 @@ class Player {
         this.walk = 0;
         this.spin = 0;
 
-        this.facingAngle = 0.7;
+        this.facingAngle = 0;
 
         this.moveSpeed = 3;                         // 3 pixels
         this.rotateSpeed = (Math.PI / 180) * 3;     // 3 degrees
 
-        this.ray = new Ray({ ctx, level, x, y, facingAngle: this.facingAngle });
 
-        // this.direction = direction;
-        // this.screen = screen;
-        // this.color = color;
+        this.rays = [];
+        this.FOV = 60;
+        this.rayAmount = level.screenWidth;
+
+        this.angleIncrement = (this.FOV / this.rayAmount) * (Math.PI / 180);
+        this.initialAngle = this.facingAngle - (this.FOV / 2) * (Math.PI / 180);
+
+        for (let i = 0; i < this.rayAmount; i++) {
+            this.rays[i] = new Ray({ ctx, level, x: this.x, y: this.y, facingAngle: this.initialAngle + (i * this.angleIncrement) });
+        }
+
     }
 
     setupControls() {
@@ -98,13 +105,14 @@ class Player {
         if (this.facingAngle > Math.PI * 2) this.facingAngle -= Math.PI * 2;
         if (this.facingAngle < 0) this.facingAngle += Math.PI * 2;
 
+        for (let i = 0; i < this.rays.length; i++) {
+            this.rays[i].setOrigin(this.x, this.y);
+            this.rays[i].setAngle(this.facingAngle + this.initialAngle + (i * this.angleIncrement));
+        }
     }     
 
 
     draw() {
-
-        this.ray.setOrigin(this.x, this.y);
-        this.ray.setAngle(this.facingAngle);
 
         const playerRadius = this.playerWidth / 2;
         
@@ -116,8 +124,9 @@ class Player {
         this.ctx.fillStyle = this.playerColor;
         this.ctx.fillRect(xStart, yStart, xEnd, yEnd);
 
-
-        this.ray.draw();
+        for (let i = 0; i < this.rays.length; i++) {
+            this.rays[i].draw();            
+        }
 
 
         // // FACING ANGLE LINE
