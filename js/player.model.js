@@ -13,12 +13,12 @@ class Player {
 
         this.walk = 0;
         this.spin = 0;
+        this.strafe = 0;
 
         this.facingAngle = 0;
 
         this.moveSpeed = 3;                         // 3 pixels
-        this.rotateSpeed = (Math.PI / 180) * 3;     // 3 degrees
-
+        this.rotateSpeed = (Math.PI / 180) * 4;     // 3 degrees
 
         this.rays = [];
         this.FOV = 60;
@@ -51,9 +51,15 @@ class Player {
                 this.walk--;
             },
             'a': () => {
-                this.spin--;
+                this.strafe--;
             },
             'd': () => {
+                this.strafe++;
+            },
+            'ArrowLeft': () => {
+                this.spin--;
+            },
+            'ArrowRight': () => {
                 this.spin++;
             }
 
@@ -67,9 +73,15 @@ class Player {
                 this.walk++;
             },
             'a': () => {
-                this.spin++;
+                this.strafe++;
             },
             'd': () => {
+                this.strafe--;
+            },
+            'ArrowLeft': () => {
+                this.spin++;
+            },
+            'ArrowRight': () => {
                 this.spin--;
             }
         }
@@ -102,14 +114,20 @@ class Player {
 
     move() {
         const moveStep = this.walk * this.moveSpeed;
+        const strafeStep = this.strafe * this.moveSpeed;
         const rotateStep = this.spin * this.rotateSpeed;
         this.facingAngle += rotateStep;
 
-        const newPlayerX = this.x + Math.cos(this.facingAngle) * moveStep;
-        const newPlayerY = this.y + Math.sin(this.facingAngle) * moveStep;
+        const playerMoveX = Math.cos(this.facingAngle) * moveStep;
+        const playerMoveY = Math.sin(this.facingAngle) * moveStep;
+        const playerStrafeX = Math.cos(this.facingAngle + Math.PI / 2) * strafeStep;
+        const playerStrafeY = Math.sin(this.facingAngle + Math.PI / 2) * strafeStep;
 
-        if (!this.collision(newPlayerX, this.y)) this.x = newPlayerX;
-        if (!this.collision(this.x, newPlayerY)) this.y = newPlayerY;
+        const newX = this.x + playerStrafeX + playerMoveX;
+        const newY = this.y + playerStrafeY + playerMoveY;
+
+        if (!this.collision(newX, this.y)) this.x = newX;
+        if (!this.collision(this.x, newY)) this.y = newY;
 
         if (this.facingAngle > Math.PI * 2) this.facingAngle -= Math.PI * 2;
         if (this.facingAngle < 0) this.facingAngle += Math.PI * 2;
