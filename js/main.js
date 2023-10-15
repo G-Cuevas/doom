@@ -11,8 +11,8 @@ const screenWidth = 500;
 const screenHeight = 500;
 const FPS = 50;
 
-const wallColor = '#000000';
-const floorColor = '#666666';
+const wallColor = 'gray';
+const floorColor = 'lightgray';
 const playerColor = '#0a3ead';
 const playerWidth = 6;
 
@@ -25,10 +25,10 @@ let firstPerson = false;
 const terrain = [
     [1,1,1,1,1,1,1,1,1,1],
     [1,0,0,0,0,1,0,0,0,1],
-    [1,0,1,0,1,1,1,1,0,1],
-    [1,0,1,0,0,1,1,0,0,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,1,0,0,1],
     [1,0,0,0,1,1,1,0,1,1],
-    [1,0,1,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,1],
     [1,0,1,0,1,0,1,1,0,1],
     [1,0,1,0,1,0,0,1,0,1],
     [1,0,0,0,0,0,0,0,0,1],

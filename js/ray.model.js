@@ -170,7 +170,7 @@ class Ray {
         this.ctx.beginPath();
         this.ctx.moveTo(x, y0);
         this.ctx.lineTo(x, y1);
-        this.ctx.strokeStyle = '#ff0000';
+        this.ctx.strokeStyle = 'gray';
         this.ctx.stroke();
 
     }
@@ -186,7 +186,7 @@ class Ray {
         this.ctx.beginPath();
         this.ctx.moveTo(this.x, this.y);
         this.ctx.lineTo(xEnd, yEnd);
-        this.ctx.strokeStyle = '#ff0000';
+        this.ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
         this.ctx.stroke();
 
 

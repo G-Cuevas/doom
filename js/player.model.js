@@ -121,14 +121,21 @@ class Player {
 
 
     render() {
+        this.ctx.fillStyle = 'lightgray';
+        this.ctx.fillRect(0, 0, this.level.screenWidth, this.level.screenHeight);
+
         for (let i = 0; i < this.rays.length; i++) {
             this.rays[i].renderWall();            
         }
     }
 
 
-    draw() {
+    draw() {        
 
+        for (let i = 0; i < this.rays.length; i++) {
+            this.rays[i].draw();            
+        }
+        
         const playerRadius = this.playerWidth / 2;
         
         const xStart = this.x-playerRadius;
@@ -138,10 +145,6 @@ class Player {
 
         this.ctx.fillStyle = this.playerColor;
         this.ctx.fillRect(xStart, yStart, xEnd, yEnd);
-
-        for (let i = 0; i < this.rays.length; i++) {
-            this.rays[i].draw();            
-        }
 
 
         // FACING ANGLE LINE
