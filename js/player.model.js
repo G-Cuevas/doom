@@ -118,16 +118,21 @@ class Player {
         const rotateStep = this.spin * this.rotateSpeed;
         this.facingAngle += rotateStep;
 
-        const playerMoveX = Math.cos(this.facingAngle) * moveStep;
-        const playerMoveY = Math.sin(this.facingAngle) * moveStep;
+        const playerWalkX = Math.cos(this.facingAngle) * moveStep;
+        const playerWalkY = Math.sin(this.facingAngle) * moveStep;
         const playerStrafeX = Math.cos(this.facingAngle + Math.PI / 2) * strafeStep;
         const playerStrafeY = Math.sin(this.facingAngle + Math.PI / 2) * strafeStep;
 
-        const newX = this.x + playerStrafeX + playerMoveX;
-        const newY = this.y + playerStrafeY + playerMoveY;
+        let playerMoveX = playerStrafeX + playerWalkX;
+        let playerMoveY = playerStrafeY + playerWalkY;
 
-        if (!this.collision(newX, this.y)) this.x = newX;
-        if (!this.collision(this.x, newY)) this.y = newY;
+        const newX = this.x + playerMoveX;
+        const newY = this.y + playerMoveY;
+
+        const playerRadius = this.playerWidth / 2;
+
+        if (!this.collision(newX - playerRadius, this.y) && !this.collision(newX + playerRadius, this.y)) this.x = newX;
+        if (!this.collision(this.x, newY - playerRadius) && !this.collision(this.x, newY + playerRadius)) this.y = newY;
 
         if (this.facingAngle > Math.PI * 2) this.facingAngle -= Math.PI * 2;
         if (this.facingAngle < 0) this.facingAngle += Math.PI * 2;
