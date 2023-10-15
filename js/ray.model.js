@@ -75,7 +75,7 @@ class Ray {
                 horizontalWallHit = true;
                 this.wallHitXHorizontal = nextHorizontalTouchX;
                 this.wallHitYHorizontal = nextHorizontalTouchY;
-                console.log({x: this.wallHitXHorizontal, y: this.wallHitYHorizontal})
+                // console.log({x: this.wallHitXHorizontal, y: this.wallHitYHorizontal})
             } else {
                 nextHorizontalTouchX += this.xStep;
                 nextHorizontalTouchY += this.yStep;
@@ -116,7 +116,7 @@ class Ray {
                 verticalWallHit = true;
                 this.wallHitXVertical = nextVerticalTouchX;
                 this.wallHitYVertical = nextVerticalTouchY;
-                console.log({x: this.wallHitXVertical, y: this.wallHitYVertical})
+                // console.log({x: this.wallHitXVertical, y: this.wallHitYVertical})
             } else {
                 nextVerticalTouchX += this.xStep;
                 nextVerticalTouchY += this.yStep;
