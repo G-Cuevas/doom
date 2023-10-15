@@ -1,5 +1,5 @@
 class Ray {
-    constructor({ ctx, level, x, y, facingAngle, column, FOV }) {
+    constructor({ ctx, level, x, y, facingAngle, column, FOV, playerAngle }) {
         this.ctx = ctx;
         this.level = level;
 
@@ -7,6 +7,7 @@ class Ray {
         this.y = y;
 
         this.facingAngle = facingAngle;
+        this.playerAngle = playerAngle;
         this.FOV = FOV;
 
         this.column = column;
@@ -34,6 +35,10 @@ class Ray {
         if (angle < 0) angle += Math.PI * 2;
         if (angle > Math.PI * 2) angle -= Math.PI * 2;
         this.facingAngle = angle;
+    }
+
+    setPlayerAngle(angle) {
+        this.playerAngle = angle;
     }
 
 
@@ -146,6 +151,11 @@ class Ray {
             this.wallHitY = this.wallHitYVertical;
             this.distance = VDistance;
         }
+
+
+        // Fix fish eye
+
+        this.distance = this.distance * Math.cos(this.playerAngle - this.facingAngle);
 
     }
 

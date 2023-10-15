@@ -36,6 +36,7 @@ class Player {
                 y: this.y,
                 FOV: this.FOV,
                 facingAngle: this.initialAngle + (i * this.angleIncrement),
+                playerAngle: this.facingAngle
             });
         }
 
@@ -116,6 +117,7 @@ class Player {
         for (let i = 0; i < this.rays.length; i++) {
             this.rays[i].setOrigin(this.x, this.y);
             this.rays[i].setAngle(this.facingAngle + this.initialAngle + (i * this.angleIncrement));
+            this.rays[i].setPlayerAngle(this.facingAngle);
         }
     }
 
