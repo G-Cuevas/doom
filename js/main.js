@@ -23,9 +23,9 @@ let player;
 
 const terrain = [
     [1,1,1,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,0,0,0,1],
-    [1,0,1,0,1,0,1,1,0,1],
-    [1,0,1,0,0,0,1,0,0,1],
+    [1,0,0,0,0,1,0,0,0,1],
+    [1,0,1,0,1,1,1,1,0,1],
+    [1,0,1,0,0,1,1,0,0,1],
     [1,0,0,0,1,1,1,0,1,1],
     [1,0,1,0,0,0,0,0,0,1],
     [1,0,1,0,1,0,1,1,0,1],
@@ -35,7 +35,7 @@ const terrain = [
 ];
 
 
-function start () {
+function start() {
     screen = document.getElementById('canvas');
 
     ctx = screen.getContext('2d');
@@ -52,12 +52,12 @@ function start () {
 
 }
 
-function clearScreen () {
+function clearScreen() {
     screen.width = screen.width;
     screen.height = screen.height;
 }
 
-function mainLoop () {
+function mainLoop() {
     clearScreen();
     level.draw(); 
     player.draw();

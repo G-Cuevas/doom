@@ -21,7 +21,9 @@ class Level {
     }
 
 
-    isWall (x, y) {
+    isWall(x, y) {
+        if (x < 0 || x >= this.terrain.length) return true;
+        if (y < 0 || y >= this.terrain[0].length) return true;
         if (this.terrain[y] === undefined) return true;
         if (this.terrain[y][x] === undefined) return true;
         return this.terrain[y][x] === 1;

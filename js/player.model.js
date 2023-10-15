@@ -1,3 +1,5 @@
+import Ray from "./ray.model";
+
 class Player {
     constructor({ ctx, level, x, y, playerColor, playerWidth }) {
         this.ctx = ctx;
@@ -12,17 +14,19 @@ class Player {
         this.walk = 0;
         this.spin = 0;
 
-        this.facingAngle = 0;
+        this.facingAngle = 0.7;
 
         this.moveSpeed = 3;                         // 3 pixels
         this.rotateSpeed = (Math.PI / 180) * 3;     // 3 degrees
+
+        this.ray = new Ray({ ctx, level, x, y, facingAngle: this.facingAngle });
 
         // this.direction = direction;
         // this.screen = screen;
         // this.color = color;
     }
 
-    setupControls () {
+    setupControls() {
         const keyDowns = {
             'w': () => {
                 this.walk++;
@@ -58,25 +62,17 @@ class Player {
             if (event.repeat) return;
             if (!keyDowns[event.key]) return;
             keyDowns[event.key]();
-
-            // console.log(event.key);
-            // console.log({moveDirection: this.walk});
-            // console.log({rotateDirection: this.spin});
         });
         
         document.addEventListener('keyup', (event) => {
             if (event.repeat) return;
             if (!keyUps[event.key]) return;
             keyUps[event.key]();
-
-            // console.log(event.key);
-            // console.log({moveDirection: this.walk});
-            // console.log({rotateDirection: this.spin});
         });
     }
 
 
-    collision (x, y) {
+    collision(x, y) {
         let collision = false;
 
         const tileX = Math.floor(x / this.level.tileWidth);
@@ -84,13 +80,11 @@ class Player {
 
         if (this.level.isWall(tileX, tileY)) collision = true;
 
-        // console.log({collision})
-
         return collision;
     }
 
 
-    move () {
+    move() {
         const moveStep = this.walk * this.moveSpeed;
         const rotateStep = this.spin * this.rotateSpeed;
         this.facingAngle += rotateStep;
@@ -104,13 +98,14 @@ class Player {
         if (this.facingAngle > Math.PI * 2) this.facingAngle -= Math.PI * 2;
         if (this.facingAngle < 0) this.facingAngle += Math.PI * 2;
 
-
-        // if (rotateStep !== 0) console.log({facingAngle: this.facingAngle});
-
     }     
 
 
     draw() {
+
+        this.ray.setOrigin(this.x, this.y);
+        this.ray.setAngle(this.facingAngle);
+
         const playerRadius = this.playerWidth / 2;
         
         const xStart = this.x-playerRadius;
@@ -122,17 +117,20 @@ class Player {
         this.ctx.fillRect(xStart, yStart, xEnd, yEnd);
 
 
-        // FACING ANGLE LINE
-        const lineLength = 80;
-        const lineColor = 'red';
-        const lineX = this.x + Math.cos(this.facingAngle) * lineLength;
-        const lineY = this.y + Math.sin(this.facingAngle) * lineLength;
+        this.ray.draw();
 
-        this.ctx.beginPath();
-        this.ctx.moveTo(this.x, this.y);
-        this.ctx.lineTo(lineX, lineY);
-        this.ctx.strokeStyle = lineColor;
-        this.ctx.stroke();
+
+        // // FACING ANGLE LINE
+        // const lineLength = 80;
+        // const lineColor = 'red';
+        // const lineX = this.x + Math.cos(this.facingAngle) * lineLength;
+        // const lineY = this.y + Math.sin(this.facingAngle) * lineLength;
+
+        // this.ctx.beginPath();
+        // this.ctx.moveTo(this.x, this.y);
+        // this.ctx.lineTo(lineX, lineY);
+        // this.ctx.strokeStyle = lineColor;
+        // this.ctx.stroke();
 
     }
 }
