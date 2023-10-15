@@ -28,7 +28,15 @@ class Player {
         this.initialAngle = this.facingAngle - (this.FOV / 2) * (Math.PI / 180);
 
         for (let i = 0; i < this.rayAmount; i++) {
-            this.rays[i] = new Ray({ ctx, level, x: this.x, y: this.y, facingAngle: this.initialAngle + (i * this.angleIncrement) });
+            this.rays[i] = new Ray({
+                ctx,
+                level,
+                column: i,
+                x: this.x,
+                y: this.y,
+                FOV: this.FOV,
+                facingAngle: this.initialAngle + (i * this.angleIncrement),
+            });
         }
 
     }
@@ -109,7 +117,14 @@ class Player {
             this.rays[i].setOrigin(this.x, this.y);
             this.rays[i].setAngle(this.facingAngle + this.initialAngle + (i * this.angleIncrement));
         }
-    }     
+    }
+
+
+    render() {
+        for (let i = 0; i < this.rays.length; i++) {
+            this.rays[i].renderWall();            
+        }
+    }
 
 
     draw() {
@@ -129,7 +144,7 @@ class Player {
         }
 
 
-        // // FACING ANGLE LINE
+        // FACING ANGLE LINE
         // const lineLength = 80;
         // const lineColor = 'red';
         // const lineX = this.x + Math.cos(this.facingAngle) * lineLength;

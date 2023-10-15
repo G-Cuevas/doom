@@ -19,6 +19,7 @@ const playerWidth = 6;
 
 let level;
 let player;
+let firstPerson = false;
 
 
 const terrain = [
@@ -40,6 +41,11 @@ function start() {
 
     ctx = screen.getContext('2d');
 
+    addEventListener('keydown', (e) => {
+        if (e.repeat) return;
+        if (e.key === 'p') firstPerson = !firstPerson;
+    });
+
     screen.width = screenWidth;
     screen.height = screenHeight;
 
@@ -59,7 +65,11 @@ function clearScreen() {
 
 function mainLoop() {
     clearScreen();
-    level.draw(); 
-    player.draw();
+    if (firstPerson) {
+        player.render();
+    } else {
+        level.draw();
+        player.draw();
+    }
     player.move();
 }

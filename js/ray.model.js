@@ -1,5 +1,5 @@
 class Ray {
-    constructor({ ctx, level, x, y, facingAngle }) {
+    constructor({ ctx, level, x, y, facingAngle, column, FOV }) {
         this.ctx = ctx;
         this.level = level;
 
@@ -7,6 +7,10 @@ class Ray {
         this.y = y;
 
         this.facingAngle = facingAngle;
+        this.FOV = FOV;
+
+        this.column = column;
+        this.distance = 0;
 
         this.wallHitX = 0;
         this.wallHitY = 0;
@@ -116,7 +120,7 @@ class Ray {
                 verticalWallHit = true;
                 this.wallHitXVertical = nextVerticalTouchX;
                 this.wallHitYVertical = nextVerticalTouchY;
-                // console.log({x: this.wallHitXVertical, y: this.wallHitYVertical})
+                
             } else {
                 nextVerticalTouchX += this.xStep;
                 nextVerticalTouchY += this.yStep;
@@ -135,15 +139,46 @@ class Ray {
         if (HDistance < VDistance) {
             this.wallHitX = this.wallHitXHorizontal;
             this.wallHitY = this.wallHitYHorizontal;
+            this.distance = HDistance;
+
         } else {
             this.wallHitX = this.wallHitXVertical;
             this.wallHitY = this.wallHitYVertical;
+            this.distance = VDistance;
         }
 
-    }   
+    }
+
+
+    renderWall() {
+
+        this.cast();
+
+        const wallTileHeight = 500;
+
+        const projectionDistance = (this.level.screenWidth / 2) / Math.tan(this.FOV / 2);
+        const wallHeight = wallTileHeight / this.distance * projectionDistance;
+
+        const y0 = (this.level.screenHeight / 2) - (wallHeight / 2);
+        const y1 = y0 + wallHeight;
+
+        const x = this.column;
+
+        // console.log({x, y0, y1, projectionDistance})
+
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(x, y0);
+        this.ctx.lineTo(x, y1);
+        this.ctx.strokeStyle = '#ff0000';
+        this.ctx.stroke();
+
+    }
+
 
     draw() {
         this.cast();
+        // this.renderWall();
 
         const xEnd = this.wallHitX;
         const yEnd = this.wallHitY;
