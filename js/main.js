@@ -19,7 +19,7 @@ const playerWidth = 6;
 
 let level;
 let player;
-let firstPerson = false;
+let firstPerson = true;
 
 
 const terrain = [

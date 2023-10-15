@@ -22,6 +22,10 @@ class Ray {
         this.wallHitXVertical = 0;
         this.wallHitYVertical = 0;
 
+        this.wallColorH = 'rgba(20, 20, 20, 0.5)';
+        this.wallColorV = 'rgba(50, 50, 50, 0.5)';
+        this.wallColor = ''
+
     }
 
 
@@ -145,16 +149,17 @@ class Ray {
             this.wallHitX = this.wallHitXHorizontal;
             this.wallHitY = this.wallHitYHorizontal;
             this.distance = HDistance;
+            this.wallColor = this.wallColorH;
 
         } else {
             this.wallHitX = this.wallHitXVertical;
             this.wallHitY = this.wallHitYVertical;
             this.distance = VDistance;
+            this.wallColor = this.wallColorV;
         }
 
 
         // Fix fish eye
-
         this.distance = this.distance * Math.cos(this.playerAngle - this.facingAngle);
 
     }
@@ -174,13 +179,11 @@ class Ray {
 
         const x = this.column;
 
-        // console.log({x, y0, y1, projectionDistance})
-
 
         this.ctx.beginPath();
         this.ctx.moveTo(x, y0);
         this.ctx.lineTo(x, y1);
-        this.ctx.strokeStyle = 'gray';
+        this.ctx.strokeStyle = this.wallColor;
         this.ctx.stroke();
 
     }
@@ -188,7 +191,6 @@ class Ray {
 
     draw() {
         this.cast();
-        // this.renderWall();
 
         const xEnd = this.wallHitX;
         const yEnd = this.wallHitY;
