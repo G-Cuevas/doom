@@ -14,6 +14,7 @@ class Player {
         this.walk = 0;
         this.spin = 0;
         this.strafe = 0;
+        this.running = false;
 
         this.facingAngle = 0;
 
@@ -61,10 +62,13 @@ class Player {
             },
             'ArrowRight': () => {
                 this.spin++;
+            },
+            'r': () => {
+                this.running = true;
             }
-
+            
         }
-
+        
         const keyUps = {
             'w': () => {
                 this.walk--;
@@ -83,6 +87,9 @@ class Player {
             },
             'ArrowRight': () => {
                 this.spin--;
+            },
+            'r': () => {
+                this.running = false;
             }
         }
 
@@ -113,9 +120,10 @@ class Player {
 
 
     move() {
-        const moveStep = this.walk * this.moveSpeed;
+        const runningMultiplier = this.running ? 1.5 : 1;
+        const moveStep = this.walk * this.moveSpeed * runningMultiplier;
         const strafeStep = this.strafe * this.moveSpeed;
-        const rotateStep = this.spin * this.rotateSpeed;
+        const rotateStep = this.spin * this.rotateSpeed * runningMultiplier;
         this.facingAngle += rotateStep;
 
         const playerWalkX = Math.cos(this.facingAngle) * moveStep;
